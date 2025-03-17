@@ -68,7 +68,7 @@
                           <button class="btn btn-primary btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#viewInfo">View</button>
                           <!-- VIEW MODAL -->
 
-                          <button class="btn btn-danger btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#editInfo">Delete</button>
+                          <button class="btn btn-danger btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#deleteInfo">Delete</button>
                           <!-- DELETE MODAL -->
 
                         </td>
