@@ -89,7 +89,6 @@ if (isset($_SESSION['errors'])) {
                         <input type="text" name="username" class="form-control" id="yourUsername" required>
                         <div class="invalid-feedback">Please enter your username.</div>
                         <?php
-                        // Display username-specific error
                         if (isset($errors['username'])) {
                           echo '<div class="text-danger small mt-1">' . $errors['username'] . '</div>';
                         }
@@ -102,7 +101,6 @@ if (isset($_SESSION['errors'])) {
                       <input type="password" name="password" class="form-control" id="yourPassword" required>
                       <div class="invalid-feedback">Please enter your password!</div>
                       <?php
-                      // Display password-specific error
                       if (isset($errors['password'])) {
                         echo '<div class="text-danger small mt-1">' . $errors['password'] . '</div>';
                       }
