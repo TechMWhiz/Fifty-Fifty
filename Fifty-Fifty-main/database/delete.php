@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $id = intval($_GET['id']); 
 
         
-        if ($stmt = $conn->prepare("DELETE FROM movie_db WHERE id = ?")) {
+        if ($stmt = $conn->prepare("DELETE FROM baranggay WHERE id = ?")) {
             $stmt->bind_param("i", $id); // Bind the ID parameter
 
          
