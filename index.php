@@ -52,6 +52,33 @@
                   </tr>
                 </thead>
                 <tbody>   
+                  <?php if ($movies->num_rows > 0): ?>
+                    <?php while($row = $movies->fetch_assoc()): ?>
+                      <tr>
+                        <th scope="row"><?php echo $row['id'];?> </th>
+                        <td><?php echo $row['title'];?></td>
+                        <td><?php echo $row['genre'];?></td>
+                        <td><?php echo $row['ratings'];?></td>
+                        <td><?php echo $row['year_released'];?></td>
+                        <td><?php echo $row['description'];?></td>
+                        <td class="d-flex justify-content-center">
+                          <button class="btn btn-success btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#editInfo">Edit</button>
+                          <!-- UPDATE MODAL -->
+
+                          <button class="btn btn-primary btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#viewInfo">View</button>
+                          <!-- VIEW MODAL -->
+
+                          <button class="btn btn-danger btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#editInfo">Delete</button>
+                          <!-- DELETE MODAL -->
+
+                        </td>
+                      </tr>
+                    <?php endwhile; ?>
+                  <?php else: ?>
+                    <tr>
+                      <td colspan="6" class="text-center">No No movies found</td>
+                    </tr>
+                  <?php endif; ?>
                 </tbody>
               </table>
               <!-- End Default Table Example -->
@@ -102,7 +129,7 @@
                     </div>
                     <div class="col-8 mt-2">
                       <label for="year_released">Year_released</label>
-                      <input type="text" name="year_released" id="year_released" class="form-control" placeholder="Enter Year_released">
+                      <input type="text" name="year_released" id="year_released" class="form-control" placeholder="Enter Year Released">
                     </div>
                     <div class="col-12 mt-2">
                       <label for="description">Description</label>
