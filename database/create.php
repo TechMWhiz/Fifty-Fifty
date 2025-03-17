@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     mysqli_close($conn);
 
     // Redirect to the index page
-    header("Location: ../index.php");
+    header('Location: index.php');
     exit();
 }
 ?>
