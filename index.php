@@ -41,7 +41,7 @@ $total_pages = ceil($total_rows / $rows_per_page);
           <div class="card-body">
             <div class="d-flex justify-content-between">
               <div>
-                <h5 class="card-title">Default Table</h5>
+                <h5 class="card-title">Movie Table</h5>
               </div>
               <div>
                 <button class="btn btn-primary btn-sm mt-4 mx-3" data-bs-toggle="modal" data-bs-target="#add">Add Movies</button>
@@ -72,46 +72,77 @@ $total_pages = ceil($total_rows / $rows_per_page);
                       <td><?php echo $row['year_released']; ?></td>
                       <td><?php echo $row['description']; ?></td>
                       <td class="d-flex justify-content-center">
-                        <button class="btn btn-success btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#editInfo">Edit</button>
+                        <button class="btn btn-primary btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#editMovie_<?php echo $row['id']; ?>">Edit</button>
                         <!-- UPDATE MODAL -->
-                      if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_movie'])) {
-‎    $id = intval($_POST['id']);
-‎    $title = $conn->real_escape_string($_POST['title']);
-‎    $genre = $conn->real_escape_string($_POST['genre']);
-‎    $ratings = $conn->real_escape_string($_POST['ratings']);
-‎    $year_released = $conn->real_escape_string($_POST['year_released']);
-‎    $description = $conn->real_escape_string($_POST['description']);
-‎
-‎    $sql = "UPDATE movies SET title='$title', genre='$genre', ratings='$ratings', year_released='$year_released', description='$description' WHERE id=$id";
-‎    if ($conn->query($sql) === TRUE) {
-‎        echo "Record updated successfully";
-‎    } else {
-‎        echo "Error updating record: " . $conn->error;
-‎    }
-‎}
-‎if (isset($_GET['edit'])) {
-‎    $id = intval($_GET['edit']);
-‎    $result = $conn->query("SELECT * FROM movies WHERE id=$id");
-‎    $movie = $result->fetch_assoc();
-‎}
-‎?>
-‎
-                        <button class="btn btn-primary btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#viewInfo">View</button>
+                        <div class="modal fade" id="editMovie_<?php echo $row['id']; ?>" tabindex="-1" aria-labelledby="editMovieLabel_<?php echo $row['id']; ?>" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <form action="database/update.php" method="POST">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="editMovieLabel_<?php echo $row['id']; ?>">Edit Movie</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                                            <div class="mb-3">
+                                                <label for="title_<?php echo $row['id']; ?>" class="form-label">Title</label>
+                                                <input type="text" class="form-control" id="title_<?php echo $row['id']; ?>" name="title" value="<?php echo htmlspecialchars($row['title']); ?>">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="genre_<?php echo $row['id']; ?>" class="form-label">Genre</label>
+                                                <input type="text" class="form-control" id="genre_<?php echo $row['id']; ?>" name="genre" value="<?php echo htmlspecialchars($row['genre']); ?>">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="ratings_<?php echo $row['id']; ?>" class="form-label">Ratings</label>
+                                                <input type="text" class="form-control" id="ratings_<?php echo $row['id']; ?>" name="ratings" value="<?php echo htmlspecialchars($row['ratings']); ?>">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="year_released_<?php echo $row['id']; ?>" class="form-label">Year Released</label>
+                                                <input type="text" class="form-control" id="year_released_<?php echo $row['id']; ?>" name="year_released" value="<?php echo htmlspecialchars($row['year_released']); ?>">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="description_<?php echo $row['id']; ?>" class="form-label">Description</label>
+                                                <textarea class="form-control" id="description_<?php echo $row['id']; ?>" name="description"><?php echo htmlspecialchars($row['description']); ?></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-success btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#viewMovie_<?php echo $row['id']; ?>">View</button>
                         <!-- VIEW MODAL -->
-                        <div class="modal fade" id="viewInfo_<?php echo $row['id']; ?>" tabindex="-1"
-                          aria-labelledby="viewLabel_<?php echo $row['id']; ?>" aria-hidden="true">
+                        <div class="modal fade" id="viewMovie_<?php echo $row['id']; ?>" tabindex="-1" aria-labelledby="viewMovieLabel_<?php echo $row['id']; ?>" aria-hidden="true">
                           <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                               <div class="modal-header">
-                                <h5 class="modal-title" id="viewLabel_<?php echo $row['id']; ?>">View Details</h5>
+                                <h1 class="modal-title fs-5" id="viewMovieLabel_<?php echo $row['id']; ?>">Movie Details</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
                               <div class="modal-body">
-                                <p><strong>Title:</strong> <?php echo $row['title']; ?></p>
-                                <p><strong>Genre:</strong> <?php echo $row['genre']; ?></p>
-                                <p><strong>Ratings:</strong> <?php echo $row['ratings']; ?></p>
-                                <p><strong>Year Released:</strong> <?php echo $row['year_released']; ?></p>
-                                <p><strong>Description:</strong> <?php echo $row['description']; ?></p>
+                                <div class="container">
+                                  <div class="row">
+                                    <div class="col-12 mt-2">
+                                      <p><strong>Title:</strong> <?php echo htmlspecialchars($row['title']); ?></p>
+                                    </div>
+                                    <div class="col-12 mt-2">
+                                      <p><strong>Genre:</strong> <?php echo htmlspecialchars($row['genre']); ?></p>
+                                    </div>
+                                    <div class="col-12 mt-2">
+                                      <p><strong>Ratings:</strong> <?php echo htmlspecialchars($row['ratings']); ?></p>
+                                    </div>
+                                    <div class="col-12 mt-2">
+                                      <p><strong>Year Released:</strong> <?php echo htmlspecialchars($row['year_released']); ?></p>
+                                    </div>
+                                    <div class="col-12 mt-2">
+                                      <p><strong>Description:</strong> <?php echo htmlspecialchars($row['description']); ?></p>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -119,13 +150,9 @@ $total_pages = ceil($total_rows / $rows_per_page);
                             </div>
                           </div>
                         </div>
-
-                        <button class="btn btn-danger btn-sm mx-1" data-bs-toggle="modal"
-                          data-bs-target="#deleteInfo_<?php echo $row['id']; ?>">Delete</button>
+                        <button class="btn btn-danger btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#deleteInfo_<?php echo $row['id']; ?>">Delete</button>
                         <!-- DELETE MODAL -->
-                        <div class="modal fade" id="deleteInfo_<?php echo $row['id']; ?>" data-bs-backdrop="static"
-                          data-bs-keyboard="false" tabindex="-1" aria-labelledby="delete_<?php echo $row['id']; ?>"
-                          aria-hidden="true">
+                        <div class="modal fade" id="deleteInfo_<?php echo $row['id']; ?>" data-bs-backdrop="static"data-bs-keyboard="false" tabindex="-1" aria-labelledby="delete_<?php echo $row['id']; ?>"aria-hidden="true">
                           <div class="modal-dialog modal-dialog-centered">
                             <form action="database/delete.php" method="POST">
                               <div class="modal-content">
@@ -150,7 +177,7 @@ $total_pages = ceil($total_rows / $rows_per_page);
                         </div>
                       </td>
                     </tr>
-                  <?php endwhile; ?>>
+                  <?php endwhile; ?>
                 <?php endif; ?>
               </tbody>
             </table>
@@ -234,7 +261,7 @@ $total_pages = ceil($total_rows / $rows_per_page);
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="editInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    <div class="modal fade" id="edit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
       aria-labelledby="editInfoLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
