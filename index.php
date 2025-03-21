@@ -79,6 +79,7 @@ $total_pages = ceil($total_rows / $rows_per_page);
 
                         <button class="btn btn-primary btn-sm mx-1" data-bs-toggle="modal"
                           data-bs-target="#viewInfo">View</button>
+                        <!-- VIEW MODAL -->
                         <div class="modal fade" id="viewInfo_<?php echo $row['id']; ?>" tabindex="-1"
                           aria-labelledby="viewLabel_<?php echo $row['id']; ?>" aria-hidden="true">
                           <div class="modal-dialog modal-dialog-centered">
@@ -100,8 +101,6 @@ $total_pages = ceil($total_rows / $rows_per_page);
                             </div>
                           </div>
                         </div>
-
-                        <!-- VIEW MODAL -->
 
                         <button class="btn btn-danger btn-sm mx-1" data-bs-toggle="modal"
                           data-bs-target="#deleteInfo_<?php echo $row['id']; ?>">Delete</button>
