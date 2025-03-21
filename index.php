@@ -44,8 +44,7 @@ $total_pages = ceil($total_rows / $rows_per_page);
                 <h5 class="card-title">Default Table</h5>
               </div>
               <div>
-                <button class="btn btn-primary btn-sm mt-4 mx-3" data-bs-toggle="modal" data-bs-target="#add">Add
-                  Movies</button>
+                <button class="btn btn-primary btn-sm mt-4 mx-3" data-bs-toggle="modal" data-bs-target="#add">Add Movies</button>
               </div>
             </div>
 
@@ -73,11 +72,9 @@ $total_pages = ceil($total_rows / $rows_per_page);
                       <td><?php echo $row['year_released']; ?></td>
                       <td><?php echo $row['description']; ?></td>
                       <td class="d-flex justify-content-center">
-                        <button class="btn btn-success btn-sm mx-1" data-bs-toggle="modal"
-                          data-bs-target="#editInfo">Edit</button>
+                        <button class="btn btn-success btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#editInfo">Edit</button>
                         <!-- UPDATE MODAL -->
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_movie'])) {
+                      if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_movie'])) {
 ‎    $id = intval($_POST['id']);
 ‎    $title = $conn->real_escape_string($_POST['title']);
 ‎    $genre = $conn->real_escape_string($_POST['genre']);
@@ -99,8 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_movie'])) {
 ‎}
 ‎?>
 ‎
-                        <button class="btn btn-primary btn-sm mx-1" data-bs-toggle="modal"
-                          data-bs-target="#viewInfo">View</button>
+                        <button class="btn btn-primary btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#viewInfo">View</button>
                         <!-- VIEW MODAL -->
                         <div class="modal fade" id="viewInfo_<?php echo $row['id']; ?>" tabindex="-1"
                           aria-labelledby="viewLabel_<?php echo $row['id']; ?>" aria-hidden="true">
