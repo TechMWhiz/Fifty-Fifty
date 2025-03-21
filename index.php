@@ -8,12 +8,22 @@
   $sql = "SELECT * FROM movies";
   $movies = $conn->query($sql);
 
+
+$rows_per_page = 5;
+$current_page = isset($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page']) : 1;
+$offset = ($current_page - 1) * $rows_per_page;
+$sql = "SELECT * FROM movies LIMIT $rows_per_page OFFSET $offset";
+$movies = $conn->query($sql);
+
+$total_rows = $conn->query("SELECT COUNT(*) AS count FROM movies")->fetch_assoc()['count'];
+$total_pages = ceil($total_rows / $rows_per_page);
+
 ?>
 
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Employee Information Management System</h1>
+      <h1>Movie Information Management System</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
@@ -34,7 +44,7 @@
                   <h5 class="card-title">Default Table</h5>
                 </div>
                 <div>
-                  <button class="btn btn-primary btn-sm mt-4 mx-3" data-bs-toggle="modal" data-bs-target="#add">Add Employee</button>
+                  <button class="btn btn-primary btn-sm mt-4 mx-3" data-bs-toggle="modal" data-bs-target="#add">Add Movies</button>
                 </div>
               </div>
 
@@ -68,30 +78,53 @@
                           <button class="btn btn-primary btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#viewInfo">View</button>
                           <!-- VIEW MODAL -->
 
-                          <button class="btn btn-danger btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#deleteInfo">Delete</button>
+                          <button class="btn btn-danger btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#deleteInfo_<?php echo $row['id']; ?>">Delete</button>
                           <!-- DELETE MODAL -->
-
+                          <div class="modal fade" id="deleteInfo_<?php echo $row['id']; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="delete_<?php echo $row['id']; ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                              <form action="database/delete.php" method="POST">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="deleteLabel_<?php echo $row['id']; ?>">Confirm Deletion</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <p>Are you sure you want to delete this record?</p>
+                                    <p><strong>This action cannot be undone.</strong></p>
+                                    <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
                         </td>
                       </tr>
-                    <?php endwhile; ?>
-                  <?php else: ?>
-                    <tr>
-                      <td colspan="6" class="text-center">No No movies found</td>
-                    </tr>
+                    <?php endwhile; ?>>
                   <?php endif; ?>
                 </tbody>
               </table>
               <!-- End Default Table Example -->
 
             </div>
+             <!-- Pagination -->
             <div class="mx-4">
               <nav aria-label="Page navigation example">
                 <ul class="pagination">
-                  <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                  <li class="page-item <?php if ($current_page <= 1) echo 'disabled'; ?>">
+                    <a class="page-link" href="?page=<?php echo max(1, $current_page - 1); ?>">Previous</a>
+                  </li>
+                  <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                    <li class="page-item <?php if ($i == $current_page) echo 'active'; ?>">
+                      <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                    </li>
+                  <?php endfor; ?>
+                  <li class="page-item <?php if ($current_page >= $total_pages) echo 'disabled'; ?>">
+                    <a class="page-link" href="?page=<?php echo min($total_pages, $current_page + 1); ?>">Next</a>
+                  </li>
                 </ul>
               </nav>
             </div>

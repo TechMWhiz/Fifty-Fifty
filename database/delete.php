@@ -1,44 +1,40 @@
 <?php
 session_start();
-include_once 'database.php'; 
+include_once 'database.php'; // Include the database connection
+var_dump($_POST['id']);
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Validate the ID
-    if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-        $id = intval($_GET['id']); 
+    if (isset($_POST['id']) && is_numeric($_POST['id'])) {
+        $id = intval($_POST['id']); // Convert the ID to an integer
 
-        
-        if ($stmt = $conn->prepare("DELETE FROM movie_db WHERE id = ?")) {
-            $stmt->bind_param("i", $id); // Bind the ID parameter
+        // Prepare and execute the DELETE query
+        if ($stmt = $conn->prepare("DELETE FROM movies WHERE id = ?")) {
+            $stmt->bind_param("i", $id);
 
-         
             if ($stmt->execute()) {
-                // Set session status for success
-                $_SESSION['status'] = 'deleted';
+                // Success
+                $_SESSION['status'] = 'Record deleted successfully.';
             } else {
-            
-                $_SESSION['status'] = 'error';
-                error_log("Delete Error: " . $stmt->error); 
+                // Error executing the query
+                $_SESSION['status'] = 'Error deleting the record.';
+                error_log("Delete Error: " . $stmt->error);
             }
 
-            // Close the statement
             $stmt->close();
         } else {
-        
-            $_SESSION['status'] = 'error';
-            error_log("Prepare Error: " . $conn->error); 
+            // Error preparing the query
+            $_SESSION['status'] = 'Error preparing the deletion statement.';
+            error_log("Prepare Error: " . $conn->error);
         }
     } else {
-        // Set session status for invalid ID
-        $_SESSION['status'] = 'invalid_id';
+        // Invalid ID
+        $_SESSION['status'] = 'Invalid record ID.';
     }
 
-    // Redirect back to the dashboard after deletion
-    header('Location: ../dashboard.php');
-    exit();
-} else {
-    //redirect to the dashboard
-    header('Location: ../dashboard.php');
+    // Redirect back to the index page
+    mysqli_close($conn);
+    header('Location: ../index.php');
     exit();
 }
 ?>
