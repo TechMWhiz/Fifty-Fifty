@@ -77,6 +77,28 @@ $total_pages = ceil($total_rows / $rows_per_page);
                           data-bs-target="#editInfo">Edit</button>
                         <!-- UPDATE MODAL -->
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_movie'])) {
+‎    $id = intval($_POST['id']);
+‎    $title = $conn->real_escape_string($_POST['title']);
+‎    $genre = $conn->real_escape_string($_POST['genre']);
+‎    $ratings = $conn->real_escape_string($_POST['ratings']);
+‎    $year_released = $conn->real_escape_string($_POST['year_released']);
+‎    $description = $conn->real_escape_string($_POST['description']);
+‎
+‎    $sql = "UPDATE movies SET title='$title', genre='$genre', ratings='$ratings', year_released='$year_released', description='$description' WHERE id=$id";
+‎    if ($conn->query($sql) === TRUE) {
+‎        echo "Record updated successfully";
+‎    } else {
+‎        echo "Error updating record: " . $conn->error;
+‎    }
+‎}
+‎if (isset($_GET['edit'])) {
+‎    $id = intval($_GET['edit']);
+‎    $result = $conn->query("SELECT * FROM movies WHERE id=$id");
+‎    $movie = $result->fetch_assoc();
+‎}
+‎?>
+‎
                         <button class="btn btn-primary btn-sm mx-1" data-bs-toggle="modal"
                           data-bs-target="#viewInfo">View</button>
                         <!-- VIEW MODAL -->
