@@ -77,27 +77,55 @@ $total_pages = ceil($total_rows / $rows_per_page);
                           data-bs-target="#editInfo">Edit</button>
                         <!-- UPDATE MODAL -->
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_movie'])) {
-‎    $id = intval($_POST['id']);
-‎    $title = $conn->real_escape_string($_POST['title']);
-‎    $genre = $conn->real_escape_string($_POST['genre']);
-‎    $ratings = $conn->real_escape_string($_POST['ratings']);
-‎    $year_released = $conn->real_escape_string($_POST['year_released']);
-‎    $description = $conn->real_escape_string($_POST['description']);
-‎
-‎    $sql = "UPDATE movies SET title='$title', genre='$genre', ratings='$ratings', year_released='$year_released', description='$description' WHERE id=$id";
-‎    if ($conn->query($sql) === TRUE) {
-‎        echo "Record updated successfully";
-‎    } else {
-‎        echo "Error updating record: " . $conn->error;
-‎    }
-‎}
-‎if (isset($_GET['edit'])) {
-‎    $id = intval($_GET['edit']);
-‎    $result = $conn->query("SELECT * FROM movies WHERE id=$id");
-‎    $movie = $result->fetch_assoc();
-‎}
-‎?>
+<div class="modal fade" id="editInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addLabel" aria-hidden="true">
+                            <div class = "modal-dialog modal-dialog-cenetered">
+                              <form action="database/update.php" method="POST">
+                                <div class = "modal-content">
+                                  <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="addLabel">Edit Movie</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                 <div class="modal-body">
+                                    <div class = "container">
+                                      <div class="row">
+                                        <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                                        <div class="col-12 mt-2">
+                                          <label for="title">Title</label>
+                                          <input type="text" name="title" id="title" class="form-control" placeholder="Enter Title" 
+                                          value="<?php echo $row['title']; ?>">
+                                        </div>
+                                        <div class="col-12 mt-2">
+                                          <label for="genre">Genre</label>
+                                          <input type="text" name="genre" id="genre" class="form-control" placeholder="Enter Genre"
+                                          value="<?php echo $row['genre']; ?>">
+                                        </div>
+                                        <div class="col-8 mt-2">
+                                          <label for="ratings">Ratings</label>
+                                          <input type="text" name="ratings" id="ratings" class="form-control" placeholder="Enter Ratings"
+                                          value="<?php echo $row['ratings']; ?>">
+                                        </div>
+                                        <div class="col-8 mt-2">
+                                          <label for="year_released">Year_released</label>
+                                          <input type="text" name="year_released" id="year_released" class="form-control" placeholder="Enter Year_released"
+                                          value="<?php echo $row['year_released']; ?>">
+                                        </div>
+                                        <div class="col-12 mt-2">
+                                          <label for="description">Description</label>
+                                          <input type="text" name="description" id="description" class="form-control" placeholder="Enter Description"
+                                          value="<?php echo $row['description']; ?>">
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Updated</button>
+                                  </div>
+                                </div>   
+                              </form>
+                            </div>
+                          </div>
+ 
 ‎
                         <button class="btn btn-primary btn-sm mx-1" data-bs-toggle="modal"
                           data-bs-target="#viewInfo">View</button>
