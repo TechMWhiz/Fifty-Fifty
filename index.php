@@ -114,7 +114,7 @@ $total_pages = ceil($total_rows / $rows_per_page);
                             </div>
                         </div>
 
-                        <button class="btn btn-primary btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#viewMovie_<?php echo $row['id']; ?>">View</button>
+                        <button class="btn btn-success btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#viewMovie_<?php echo $row['id']; ?>">View</button>
                         <!-- VIEW MODAL -->
                         <div class="modal fade" id="viewMovie_<?php echo $row['id']; ?>" tabindex="-1" aria-labelledby="viewMovieLabel_<?php echo $row['id']; ?>" aria-hidden="true">
                           <div class="modal-dialog modal-dialog-centered">
@@ -177,7 +177,7 @@ $total_pages = ceil($total_rows / $rows_per_page);
                         </div>
                       </td>
                     </tr>
-                  <?php endwhile; ?>>
+                  <?php endwhile; ?>
                 <?php endif; ?>
               </tbody>
             </table>
